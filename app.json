@@ -1,0 +1,14 @@
+{
+  "name": "Todo app",
+  "description": "Todo app in plain JS ",
+  "website": "https://github.com/kimbugp/todo",
+  "repository": "https://github.com/kimbugp/todo",
+  "logo": "https://kimbugp.herokuapp.com/node.svg",
+  "success_url": "/",
+  "keywords": ["node", "express", "todo", "realtime", "websocket"],
+  "scripts": {},
+  "addons": [],
+  "env": {
+    "BUILDPACK_URL": "https://github.com/heroku/heroku-buildpack-nodejs"
+  }
+}

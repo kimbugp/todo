@@ -1,23 +1,19 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 
 <head>
+    <link rel="stylesheet" type="text/css" href="./index.css">
+
     <title>Simple todo app with socket</title>
 </head>
 
 <body>
-    <ul id="messages"></ul>
-    <div>Sample df </div>
-    <form action="">
-        <input id="m" autocomplete="off" /><button>Send</button>
-    </form>
-    <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io.connect('http://localhost:8000');
-        socket.on("reload", function (data) {
-            window.location.reload();
-        });
-    </script>
+    <div id='root'></div>
+    <script src="./index.js"></script>
+    <script src="./model.js"></script>
 </body>
+<!-- <script>
+    load_table();
+</script> -->
 
 </html>

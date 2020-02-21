@@ -23,7 +23,7 @@ const reloader = () => {
   });
 };
 
-reloader();
+// reloader();
 server.listen(PORT, () => {
   console.log(`go to http://localhost:${PORT}`);
 });

@@ -1,32 +1,104 @@
-.left {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: sans-serif;
+  font-size: 1rem;
+  color: #444;
+}
+
+#root {
+  max-width: 450px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+form {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+select,
+[type="text"],
+button {
   display: inline-block;
-  margin-right: 10px;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+select {
+  color: #222;
 }
 
-.right {
-  display: inline-block;
-  margin-right: 10px;
+button {
+  cursor: pointer;
+  background: #007bff;
+  color: white;
+  border: 2px solid #007bff;
+  margin: 0 0.5rem;
 }
 
-.outer {
-  margin-left: 5px;
+[type="select"]:active,
+[type="select"]:focus,
+[type="text"]:active,
+[type="text"]:focus {
+  outline: 0;
+  border: 2px solid #007bff;
 }
 
-.full-width {
-  width: 40% !important;
-  margin-left: 30%;
-  margin-right: 30%;
+[type="checkbox"] {
+  margin-right: 1rem;
+  font-size: 2rem;
 }
 
-.table-div {
-  margin-top: 20px;
-}
-
-.radioButtons {
+h1 {
+  color: #222;
   text-align: center;
 }
 
-.table-striped > tbody > tr:nth-child(2n + 1) > td,
-.table-striped > tbody > tr:nth-child(2n + 1) > th {
-  background-color: rgb(217, 237, 247);
+ul {
+  padding: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  background: #f4f4f4;
+  border-radius: 4px;
+}
+
+li span {
+  display: inline-block;
+  padding: 0.5rem;
+  width: 250px;
+  border-radius: 4px;
+  border: 2px solid transparent;
+}
+
+li span:hover {
+  background: rgba(179, 215, 255, 0.52);
+}
+
+li span:focus {
+  outline: 0;
+  border: 2px solid #007bff;
+  background: rgba(179, 207, 255, 0.52);
+}
+
+.priority {
+  height: 25px;
+  width: 25px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.todo-list {
+  width: 41vw;
 }

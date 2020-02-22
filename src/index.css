@@ -11,7 +11,7 @@ html {
 }
 
 #root {
-  max-width: 450px;
+  max-width: 55vw;
   margin: 2rem auto;
   padding: 0 1rem;
 }
@@ -72,7 +72,7 @@ li {
   background: #f4f4f4;
   border-radius: 4px;
 }
-
+#due,
 li span {
   display: inline-block;
   padding: 0.5rem;
@@ -80,11 +80,11 @@ li span {
   border-radius: 4px;
   border: 2px solid transparent;
 }
-
+#due:hover,
 li span:hover {
   background: rgba(179, 215, 255, 0.52);
 }
-
+#due:focus,
 li span:focus {
   outline: 0;
   border: 2px solid #007bff;
@@ -100,5 +100,44 @@ li span:focus {
 }
 
 .todo-list {
-  width: 41vw;
+  width: 50vw;
+}
+
+/* tool tip */
+.tool-tip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+.tool-tip .tool-tip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  padding: 6px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  margin-left: -60px;
+
+  opacity: 0;
+  text-transform: lowercase;
+  transition: opacity 0.3s;
+}
+
+.tool-tip .tool-tip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 100%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: 5px;
+  border-color: #555 transparent transparent transparent;
+}
+.tool-tip:hover .tool-tip-text {
+  visibility: visible;
+  opacity: 1;
 }

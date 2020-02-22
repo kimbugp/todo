@@ -6,7 +6,8 @@ class Model {
         name: "Sample Input",
         description: "Description",
         priority: "1",
-        complete: true
+        complete: true,
+        "due date": "2020-01-01"
       }
     };
     this.schema = schema;
@@ -32,8 +33,8 @@ class Model {
         }
       });
     } else {
-      Object.keys(this.data).forEach(key => {
-        if ((key in Object.keys(this.schema)) & (data[key] !== undefined)) {
+      Object.keys(data).forEach(key => {
+        if ((this.schema[key] !== undefined) & (data[key] !== undefined)) {
           record[key] = data[key];
         }
       });
@@ -43,12 +44,12 @@ class Model {
 
   update(id, input) {
     let item = this.data[id];
-    if (!item) {
-      item = this.serialize(input, true, item);
-      this.data[id] = item;
+    if (item) {
+      let output = this.serialize(input, true, item);
+      this.data[id] = output;
+      this.onChanged(this.data);
+      return output;
     }
-    this.onChanged(this.data);
-    return this.data;
   }
   delete(id) {
     let item = this.data[id];
@@ -64,11 +65,16 @@ class Model {
   getNextId() {
     return Object.keys(this.data).length + 1;
   }
+  isDate(date) {
+    return new Date(date) !== "Invalid Date" && !isNaN(new Date(date))
+      ? true
+      : false;
+  }
 
   validate(data, raiseException = true) {
     let errors = {};
     return Object.keys(data).every(key => {
-      if (typeof data[key] == this.schema[key].type) {
+      if (typeof data[key] == this.schema[key].type || this.isDate(data[key])) {
         return true;
       } else {
         errors[key] = [
@@ -90,6 +96,7 @@ class Model {
 class View {
   constructor({ base, title, inputs }) {
     this.app = this.getElement(base);
+    this.construct = inputs;
     this.createForm(title, inputs);
 
     // edit config
@@ -120,9 +127,9 @@ class View {
       this.inputs.push(key.name);
       Object.keys(key).forEach(i => {
         if (i === "option") {
-          Object.keys(key[i]).forEach((v, index) => {
+          Object.keys(key[i]).forEach(v => {
             let select = this.createElement(i);
-            select.value = index;
+            select.value = parseInt(v);
             select.text = key[i][v];
             this[key.name].append(select);
           });
@@ -130,6 +137,7 @@ class View {
           this[key.name][i] = key[i];
         }
       });
+      this[key.name].required = true;
       this.form.append(this[key.name]);
     });
     this.submitButton = this.createElement("button");
@@ -158,7 +166,6 @@ class View {
         checkbox.type = "checkbox";
         checkbox.checked = item.complete;
 
-        // The todo item text will be in a content-editable span
         const nameSpan = this.createElement("span");
         nameSpan.contentEditable = true;
         nameSpan.classList.add("editable");
@@ -166,10 +173,17 @@ class View {
 
         const descriptionSpan = this.createElement("span");
         descriptionSpan.contentEditable = true;
+        descriptionSpan.name = "description";
         descriptionSpan.classList.add("editable");
-        nameSpan.name = "description";
 
-        // If the todo is complete, it will have a strikethrough
+        // due date field
+        let dueDateSpan = this.createElement("input");
+        dueDateSpan.type = "date";
+        dueDateSpan.id = "due";
+        dueDateSpan.name = "due date";
+        dueDateSpan.value = item["due date"];
+        dueDateSpan.classList.add("editable");
+
         if (item.complete) {
           const strike = this.createElement("s");
           strike.textContent = item.name;
@@ -185,26 +199,44 @@ class View {
         }
 
         // priority level span
-        const color = {
-          1: "#fc0f03",
-          2: "#1e7d51",
-          3: "#dae3df"
-        };
-
-        let priority = this.createElement("span");
-        priority.classList.add("priority");
-        priority.style["background-color"] = color[item.priority];
+        let priority = this.priorityDot(item);
 
         // The delete button
         const deleteButton = this.createElement("button", "delete");
         deleteButton.textContent = "Delete";
-        li.append(checkbox, nameSpan, descriptionSpan, priority, deleteButton);
-
+        li.append(
+          checkbox,
+          nameSpan,
+          descriptionSpan,
+          dueDateSpan,
+          priority,
+          deleteButton
+        );
         // Append nodes to the todo items
         this.todoItems.append(li);
       });
     }
   }
+  priorityDot(item) {
+    const color = {
+      1: "#fc0f03",
+      2: "#1e7d51",
+      3: "cadetblue"
+    };
+    let priority = this.createElement("span");
+
+    // tool tip text
+    let text = this.createElement("span");
+    text.classList.add("tool-tip-text");
+    text.textContent = this.construct.fields[2].option[item.priority];
+    priority.append(text);
+
+    priority.classList.add("priority");
+    priority.classList.add("tool-tip");
+    priority.style["background-color"] = color[item.priority];
+    return priority;
+  }
+
   get _inputText() {
     let record = {};
     this.inputs.map(key => {
@@ -246,11 +278,12 @@ class View {
   _listeners() {
     this.todoItems.addEventListener("input", event => {
       if (event.target.className === "editable") {
-        this._temp = event.target.innerText;
+        this._temp = event.target.innerText
+          ? event.target.innerText
+          : event.target.value;
       }
     });
   }
-  // Send the completed value to the model
   bindEdit(handler) {
     this.todoItems.addEventListener("focusout", event => {
       if (this._temp) {
@@ -276,7 +309,6 @@ class Controller {
     // edit config
     this.view.bindEdit(this.handleEdit);
   }
-  // Update temporary state
 
   onChange = items => {
     this.view.display(items);
@@ -311,6 +343,10 @@ schema = {
   done: {
     type: "boolean",
     default: false
+  },
+  "due date": {
+    type: "date",
+    default: "2020-01-01"
   }
 };
 
@@ -338,10 +374,16 @@ constructor = {
         element: "select",
         name: "priority",
         option: {
-          1: "LOW",
+          1: "HIGH",
           2: "MEDIUM",
-          3: "HIGH"
+          3: "LOW"
         }
+      },
+      {
+        type: "date",
+        element: "input",
+        name: "due date",
+        value: "2020-01-01"
       }
     ]
   }
@@ -351,12 +393,3 @@ const view = new View(constructor);
 const model = new Model(schema);
 
 const app = new Controller(model, view);
-
-data = [
-  {
-    name: "Sample Input",
-    description: "Description",
-    priority: 1,
-    complete: true
-  }
-];

@@ -36,9 +36,9 @@ select {
 
 button {
   cursor: pointer;
-  background: #007bff;
+  background: #242375;
   color: white;
-  border: 2px solid #007bff;
+  border: 2px solid #242375;
   margin: 0 0.5rem;
 }
 
@@ -47,12 +47,16 @@ button {
 [type="text"]:active,
 [type="text"]:focus {
   outline: 0;
-  border: 2px solid #007bff;
+  border: 2px solid #242375;
 }
 
 [type="checkbox"] {
   margin-right: 1rem;
   font-size: 2rem;
+}
+
+input:checked {
+  background-color: #242375;
 }
 
 h1 {
@@ -87,7 +91,7 @@ li span:hover {
 #due:focus,
 li span:focus {
   outline: 0;
-  border: 2px solid #007bff;
+  border: 2px solid #242375;
   background: rgba(179, 207, 255, 0.52);
 }
 
@@ -141,3 +145,4 @@ li span:focus {
   visibility: visible;
   opacity: 1;
 }
+

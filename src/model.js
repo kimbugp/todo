@@ -166,9 +166,7 @@ class View {
           const li = this.createElement("li");
           li.id = item.id;
 
-          const checkbox = this.createElement("input");
-          checkbox.type = "checkbox";
-          checkbox.checked = item.complete;
+          let checkbox = this.createCheckBox(item);
 
           const nameSpan = this.createElement("span");
           nameSpan.contentEditable = true;
@@ -221,6 +219,19 @@ class View {
         });
     }
   }
+  createCheckBox(item) {
+    const checkbox = this.createElement("label");
+    checkbox.classList.add("checkbox");
+    checkbox.id = item.id;
+    const defaultCheckBox = this.createElement("input");
+    defaultCheckBox.type = "checkbox";
+    defaultCheckBox.checked = item.complete;
+    let checkmark = this.createElement("span");
+    checkmark.classList.add("checkmark");
+    checkbox.append(defaultCheckBox, checkmark);
+    return checkbox;
+  }
+
   priorityDot(item) {
     const color = {
       1: "#fc0f03",

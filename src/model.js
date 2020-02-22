@@ -158,63 +158,67 @@ class View {
       this.todoItems.append(p);
     } else {
       // Create todo item nodes for each todo in state
-      Object.values(items).forEach(item => {
-        const li = this.createElement("li");
-        li.id = item.id;
+      Object.values(items)
+        .sort((a, b) => {
+          return new Date(b["due date"]) - new Date(a["due date"]);
+        })
+        .forEach(item => {
+          const li = this.createElement("li");
+          li.id = item.id;
 
-        const checkbox = this.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.checked = item.complete;
+          const checkbox = this.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.checked = item.complete;
 
-        const nameSpan = this.createElement("span");
-        nameSpan.contentEditable = true;
-        nameSpan.classList.add("editable");
-        nameSpan.name = "name";
+          const nameSpan = this.createElement("span");
+          nameSpan.contentEditable = true;
+          nameSpan.classList.add("editable");
+          nameSpan.name = "name";
 
-        const descriptionSpan = this.createElement("span");
-        descriptionSpan.contentEditable = true;
-        descriptionSpan.name = "description";
-        descriptionSpan.classList.add("editable");
+          const descriptionSpan = this.createElement("span");
+          descriptionSpan.contentEditable = true;
+          descriptionSpan.name = "description";
+          descriptionSpan.classList.add("editable");
 
-        // due date field
-        let dueDateSpan = this.createElement("input");
-        dueDateSpan.type = "date";
-        dueDateSpan.id = "due";
-        dueDateSpan.name = "due date";
-        dueDateSpan.value = item["due date"];
-        dueDateSpan.classList.add("editable");
+          // due date field
+          let dueDateSpan = this.createElement("input");
+          dueDateSpan.type = "date";
+          dueDateSpan.id = "due";
+          dueDateSpan.name = "due date";
+          dueDateSpan.value = item["due date"];
+          dueDateSpan.classList.add("editable");
 
-        if (item.complete) {
-          const strike = this.createElement("s");
-          strike.textContent = item.name;
+          if (item.complete) {
+            const strike = this.createElement("s");
+            strike.textContent = item.name;
 
-          const strike1 = this.createElement("s");
-          strike1.textContent = item.description;
+            const strike1 = this.createElement("s");
+            strike1.textContent = item.description;
 
-          nameSpan.append(strike);
-          descriptionSpan.append(strike1);
-        } else {
-          nameSpan.textContent = item.name;
-          descriptionSpan.textContent = item.description;
-        }
+            nameSpan.append(strike);
+            descriptionSpan.append(strike1);
+          } else {
+            nameSpan.textContent = item.name;
+            descriptionSpan.textContent = item.description;
+          }
 
-        // priority level span
-        let priority = this.priorityDot(item);
+          // priority level span
+          let priority = this.priorityDot(item);
 
-        // The delete button
-        const deleteButton = this.createElement("button", "delete");
-        deleteButton.textContent = "Delete";
-        li.append(
-          checkbox,
-          nameSpan,
-          descriptionSpan,
-          dueDateSpan,
-          priority,
-          deleteButton
-        );
-        // Append nodes to the todo items
-        this.todoItems.append(li);
-      });
+          // The delete button
+          const deleteButton = this.createElement("button", "delete");
+          deleteButton.textContent = "Delete";
+          li.append(
+            checkbox,
+            nameSpan,
+            descriptionSpan,
+            dueDateSpan,
+            priority,
+            deleteButton
+          );
+          // Append nodes to the todo items
+          this.todoItems.append(li);
+        });
     }
   }
   priorityDot(item) {

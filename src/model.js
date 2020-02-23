@@ -1,6 +1,6 @@
 class Model {
   constructor(schema) {
-    this.data = {
+    this.data = JSON.parse(localStorage.getItem("localItems")) || {
       1: {
         id: 1,
         name: "Sample Input",
@@ -17,8 +17,12 @@ class Model {
     this.validate(data);
     let record = this.serialize(data);
     this.data[record.id] = record;
-    this.onChanged(this.data);
+    this._commit(this.data);
     return record;
+  }
+  _commit(data) {
+    this.onChanged(data);
+    localStorage.setItem("localItems", JSON.stringify(data));
   }
   serialize(data, update = false, record = null) {
     if (!update) {
@@ -47,7 +51,7 @@ class Model {
     if (item) {
       let output = this.serialize(input, true, item);
       this.data[id] = output;
-      this.onChanged(this.data);
+      this._commit(this.data);
       return output;
     }
   }
@@ -55,7 +59,7 @@ class Model {
     let item = this.data[id];
     if (item) {
       delete this.data[id];
-      this.onChanged(this.data);
+      this._commit(this.data);
     }
   }
   toggle(id) {
@@ -93,4 +97,3 @@ class Model {
     this.onChanged = callback;
   }
 }
-

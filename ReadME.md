@@ -9,6 +9,7 @@ This is a simple todo up created with vanilla js
 - Updating a todo item
 - Deleting a todo item
 - Crossing-out complete items
+- Persistance to local storage
 
 ## Todo Item fields
 

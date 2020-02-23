@@ -29,4 +29,3 @@ class Controller {
     this.model.toggle(id);
   };
 }
-

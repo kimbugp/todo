@@ -97,3 +97,27 @@ class Model {
     this.onChanged = callback;
   }
 }
+const Schema = {
+  name: {
+    type: "string"
+  },
+  complete: {
+    type: "boolean"
+  },
+  description: {
+    type: "string"
+  },
+  priority: {
+    type: "string"
+  },
+  done: {
+    type: "boolean",
+    default: false
+  },
+  "due date": {
+    type: "date",
+    default: "2020-01-01"
+  }
+};
+
+const model = new Model(Schema);

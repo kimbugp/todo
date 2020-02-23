@@ -2,7 +2,7 @@ const path = require("path");
 let express = require("express");
 
 var app = express();
-let PORT = 8000;
+let PORT = process.env.PORT || 8000;
 var server = require("http").Server(app);
 var io = require("socket.io")(server);
 

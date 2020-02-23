@@ -3,7 +3,7 @@
   "description": "Todo app in plain JS ",
   "website": "https://github.com/kimbugp/todo",
   "repository": "https://github.com/kimbugp/todo",
-  "logo": "https://kimbugp.herokuapp.com/node.svg",
+  "logo": "https://github.com/kimbugp/todo/raw/master/img/sample.gif",
   "success_url": "/",
   "keywords": ["node", "express", "todo", "realtime", "websocket"],
   "scripts": {},
